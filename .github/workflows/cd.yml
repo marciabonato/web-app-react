@@ -1,0 +1,63 @@
+name: CD - Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Permissões necessárias para GitHub Pages e autenticação OIDC
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Permite apenas um deploy simultâneo, cancelando execuções em fila
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build da Aplicação
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: web-app-react
+
+    steps:
+      - name: Checkout do Repositório
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: 'yarn'
+          cache-dependency-path: web-app-react/yarn.lock
+
+      - name: Instalar Dependências
+        run: yarn install --frozen-lockfile
+
+      - name: Build de Produção
+        run: yarn build
+
+      - name: Configurar GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload do Artefato do GitHub Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: web-app-react/dist
+
+  deploy:
+    name: Deploy no GitHub Pages
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Deploy no GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

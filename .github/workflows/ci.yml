@@ -1,0 +1,39 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    name: Testes & Validação
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: web-app-react
+
+    steps:
+      - name: Checkout do Repositório
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: "yarn"
+          cache-dependency-path: web-app-react/yarn.lock
+
+      - name: Instalar Dependências
+        run: yarn install --frozen-lockfile
+
+      - name: Executar Testes Unitários e de Integração (Vitest)
+        run: yarn test
+
+      - name: Instalar Navegadores Playwright
+        run: yarn playwright install --with-deps chromium
+
+      - name: Executar Testes E2E (Playwright)
+        run: yarn test:e2e

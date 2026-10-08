@@ -1,0 +1,29 @@
+# Dependências
+node_modules/
+**/node_modules/
+
+# Builds e Distribuição
+dist/
+**/dist/
+dist-ssr/
+**/dist-ssr/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Relatórios e Testes E2E
+playwright-report/
+**/playwright-report/
+test-results/
+**/test-results/
+
+# Arquivos do Sistema e IDEs
+.DS_Store
+.vscode/*
+!.vscode/extensions.json
+.idea/
+*.local
