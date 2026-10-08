@@ -5,7 +5,7 @@ import react from "@vitejs/plugin-react";
 
 // Configuração base do Vite (Plugins, Build, etc.)
 const viteConfig = defineConfig({
-  base: "/web-app-react/",
+  base: process.env.NODE_ENV === "production" ? "/web-app-react/" : "/",
   plugins: [react()],
 });
 
