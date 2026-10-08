@@ -36,4 +36,7 @@ jobs:
         run: yarn playwright install --with-deps chromium
 
       - name: Executar Testes E2E (Playwright)
-        run: yarn test:e2e
+        run: |
+          yarn dev &
+          npx wait-on http://localhost:5173/web-app-react/
+          yarn test:e2e
