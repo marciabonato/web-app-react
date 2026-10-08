@@ -13,8 +13,7 @@
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
     "test:e2e:report": "playwright show-report",
-    "db:reset": "node scripts/reset-db.js",
-    "postinstall": "yarn --cwd backend/ServeRest install --frozen-lockfile"
+    "db:reset": "node scripts/reset-db.js"
   },
   "dependencies": {
     "@mantine/core": "^9.6.3",
